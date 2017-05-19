@@ -34,9 +34,12 @@ public class VideoWS {
      */
     @WebMethod(operationName = "upload")
     public boolean upload(@WebParam(name = "fileName") String fileName, @WebParam(name = "video") byte[] video, @WebParam(name = "course") String course, @WebParam(name = "user") String user) {
+        
+        byte[] testVideo = "this test is going to be an byte[]".getBytes();
+                
         VideoDao videoDao = new VideoDaoImpl();
         try{
-            Video newVideo = new Video(fileName, video, course, user);            
+            Video newVideo = new Video(fileName, testVideo, course, user);            
             videoDao.saveVideo(newVideo);
             return true;
         }
@@ -51,13 +54,13 @@ public class VideoWS {
      */
     @WebMethod(operationName = "download")
     public byte[] download(@WebParam(name = "fileName") String fileName) {
-//        VideoDao videoDao = new VideoDaoImpl();
-//        try{
-//            return videoDao.getVideo(fileName).getVideo();            
-//        }
-//        catch(Exception ex){
-//            System.err.println(ex);           
-//        }
+        VideoDao videoDao = new VideoDaoImpl();
+        try{
+            return videoDao.getVideo(fileName).getVideo();            
+        }
+        catch(Exception ex){
+            System.err.println(ex);           
+        }
         
         return null;
     }

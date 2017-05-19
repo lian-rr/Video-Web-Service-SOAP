@@ -21,10 +21,15 @@ import javax.xml.ws.WebServiceException;
  * @author lirodrig
  */
 public class VideoDaoImpl implements VideoDao {
+    
+    protected String OS = System.getProperty("os.name").toLowerCase();
 
     @Override
     public void saveVideo(Video video) {
-        String filePath = "c:/repository" + File.separator + video.getName();
+        
+        String filePath = ((OS.indexOf("win") >= 0)?"c:/repository":"/var/www/html/repository") + File.separator + video.getName();
+        
+            
         try {
             FileOutputStream fos = new FileOutputStream(filePath);
             BufferedOutputStream outputStream = new BufferedOutputStream(fos);
@@ -41,7 +46,9 @@ public class VideoDaoImpl implements VideoDao {
 
     @Override
     public Video getVideo(String fileName) {
-        String filePath = "c:/repository" + File.separator + fileName;
+        
+        String filePath = ((OS.indexOf("win") >= 0)?"c:/repository":"/var/www/html/repository") + File.separator + fileName;
+        
         System.out.println("Sending file: " + filePath);
         try {
             //lee el archivo del repositorio

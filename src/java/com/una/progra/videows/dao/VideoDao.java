@@ -11,7 +11,8 @@ import com.una.progra.videows.model.Video;
  *
  * @author lirodrig
  */
-public interface VideoDao {
+public interface VideoDao {   
+    
     
     public void saveVideo(Video video);
     
