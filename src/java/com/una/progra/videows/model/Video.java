@@ -13,14 +13,20 @@ public class Video {
     
     private String name;
     private byte[] video;
-    private String course;
-    private String user;
+    private int course;
+    private int user;
+    private String path;
 
-    public Video(String name, byte[] video, String course, String user) {
+    public Video() {
+    }
+    
+    
+    public Video(String name, byte[] video, int course, int user, String path) {
         this.name = name;
         this.video = video;
         this.course = course;
         this.user = user;
+        this.path = path;
     }   
     
 
@@ -40,21 +46,31 @@ public class Video {
         this.video = video;
     }
 
-    public String getCourse() {
+    public int getCourse() {
         return course;
     }
 
-    public void setCourse(String course) {
+    public void setCourse(int course) {
         this.course = course;
     }
 
-    public String getUser() {
+    public int getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(int user) {
         this.user = user;
     }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+    
+    
     
     
 }

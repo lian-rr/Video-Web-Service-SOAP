@@ -5,6 +5,7 @@
  */
 package com.una.progra.videows.dao;
 
+import com.una.progra.dto.VideoDTO;
 import com.una.progra.videows.model.Video;
 
 /**
@@ -14,7 +15,7 @@ import com.una.progra.videows.model.Video;
 public interface VideoDao {   
     
     
-    public void saveVideo(Video video);
+    public VideoDTO saveVideo(Video video);
     
     public Video getVideo(String fileName);    
 }

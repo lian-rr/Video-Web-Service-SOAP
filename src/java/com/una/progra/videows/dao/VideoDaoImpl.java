@@ -5,6 +5,8 @@
  */
 package com.una.progra.videows.dao;
 
+import com.una.progra.dto.VideoDTO;
+import com.una.progra.videoMDB.VideoMDB;
 import com.una.progra.videows.model.Video;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -25,10 +27,13 @@ public class VideoDaoImpl implements VideoDao {
     protected String OS = System.getProperty("os.name").toLowerCase();
 
     @Override
-    public void saveVideo(Video video) {
+    public VideoDTO saveVideo(Video video) {
         
-        String filePath = ((OS.indexOf("win") >= 0)?"c:/repository":"/var/www/html/repository") + File.separator + video.getName();
+        String path = video.getName();
         
+        String filePath = ((OS.indexOf("win") >= 0)?"c:/repository":"/var/www/html/repository") + File.separator + path;
+        
+        VideoDTO videoDTO = VideoMDB.getInstance().saveVideo(path, video);
             
         try {
             FileOutputStream fos = new FileOutputStream(filePath);
@@ -37,6 +42,7 @@ public class VideoDaoImpl implements VideoDao {
             outputStream.close();
 
             System.out.println("File saved in: " + filePath);
+            return videoDTO;
 
         } catch (IOException ex) {
             Logger.getLogger(VideoDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,9 +51,11 @@ public class VideoDaoImpl implements VideoDao {
     }
 
     @Override
-    public Video getVideo(String fileName) {
+    public Video getVideo(String videoId) {
         
-        String filePath = ((OS.indexOf("win") >= 0)?"c:/repository":"/var/www/html/repository") + File.separator + fileName;
+        Video video = VideoMDB.getInstance().readVideo(videoId);
+        
+        String filePath = ((OS.indexOf("win") >= 0)?"c:/repository":"/var/www/html/repository") + File.separator + video.getPath();
         
         System.out.println("Sending file: " + filePath);
         try {
@@ -58,8 +66,9 @@ public class VideoDaoImpl implements VideoDao {
             byte[] fileBytes = new byte[(int) file.length()];
             inputStream.read(fileBytes);
             inputStream.close();
-                       
-            return new Video(fileName,fileBytes,"xxx","yyy");
+            
+            video.setVideo(fileBytes);
+            return video;
             
         } catch (IOException ex) {
             Logger.getLogger(VideoDaoImpl.class.getName()).log(Level.SEVERE, null, ex);

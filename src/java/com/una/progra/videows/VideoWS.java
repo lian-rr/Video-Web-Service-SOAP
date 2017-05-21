@@ -5,6 +5,7 @@
  */
 package com.una.progra.videows;
 
+import com.una.progra.dto.VideoDTO;
 import com.una.progra.videows.dao.VideoDao;
 import com.una.progra.videows.dao.VideoDaoImpl;
 import com.una.progra.videows.model.Video;
@@ -19,33 +20,25 @@ import javax.ejb.Stateless;
  */
 @WebService(serviceName = "VideoWS")
 @Stateless()
-public class VideoWS {
+public class VideoWS {   
     
-    /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
-
     /**
      * Web service operation
      */
     @WebMethod(operationName = "upload")
-    public boolean upload(@WebParam(name = "fileName") String fileName, @WebParam(name = "video") byte[] video, @WebParam(name = "course") String course, @WebParam(name = "user") String user) {
+    public VideoDTO upload(@WebParam(name = "fileName") String fileName, @WebParam(name = "video") byte[] video, @WebParam(name = "course") int course, @WebParam(name = "user") int user) {
         
-        byte[] testVideo = "this test is going to be an byte[]".getBytes();
+//        byte[] testVideo = "this test is going to be an byte[]".getBytes();
                 
         VideoDao videoDao = new VideoDaoImpl();
         try{
-            Video newVideo = new Video(fileName, testVideo, course, user);            
-            videoDao.saveVideo(newVideo);
-            return true;
+            Video newVideo = new Video(fileName, video, course, user, fileName);            
+            return videoDao.saveVideo(newVideo);
+            
         }
         catch(Exception ex){
             System.err.println(ex);
-            return false;
+            return new VideoDTO(false, ex.getMessage());
         }
     }
 
@@ -53,10 +46,10 @@ public class VideoWS {
      * Web service operation
      */
     @WebMethod(operationName = "download")
-    public byte[] download(@WebParam(name = "fileName") String fileName) {
+    public byte[] download(@WebParam(name = "fileName") String videoId) {
         VideoDao videoDao = new VideoDaoImpl();
         try{
-            return videoDao.getVideo(fileName).getVideo();            
+            return videoDao.getVideo(videoId).getVideo();            
         }
         catch(Exception ex){
             System.err.println(ex);           
